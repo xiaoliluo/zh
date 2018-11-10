@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {load href="__CSS__/bootstrap.min.css"/}
+    {load href="__JS__/jquery.min.js"/}
+    {load href="__JS__/bootstrap.min.js"/}
+    {//http://zx.com/tp51/public/static/js/jquery-3.3.1.min.js正确静态资源文件路径格式}
+    {//试了好久才把bootstrap的样式生成，之前引入最新版本4.0+不行，换成3.0的而且引入min类型的文件，其他的不行}
+</head>
+<body>
+
+    <table class="table" border="1px solid " style="width:50%" align="center">
+        <caption></caption>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>是否成年</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="result" id="v"}
+        <tr class="active">
+            <td>{$v.id}</td>
+            <td>{$v.name}</td>
+            <td>{$v.age}</td>
+            <td>{if ($v.age)< 18 }<font color="red">未成年</font>
+                {else/}<font color="#006400" >成年</font>
+                {/if}
+            </td>
+            <tr>
+        {/volist}
+        </tbody>
+
+    </table>
+
+
+    <div align="center">
+    <ul class="pagination" >
+       {$result|raw}
+    </ul>
+
+        </div>
+
+</body>
+</html>

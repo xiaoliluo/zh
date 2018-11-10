@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-md-12">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">{$siteName|default="社区问答"}</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+
+                        <li
+                                {//当浏览器里面鼠标点击的cate_id不存在时首页高亮显示}
+                                {empty name="$Request.param.cate_id"}
+                                class="active"
+                                {/empty}
+                               ><a href="{:url('index/index')}">首页 <span class="sr-only">(current)</span></a></li>
+
+
+                        {volist name="res" id="vo" key="k" }
+
+                                <li {//当遍历出来的分类id值和浏览器里面鼠标点击的cate_id值相等时才显示高亮}
+                                        {eq name="vo.id" value="$Request.param.cate_id"}
+                                            class="active"
+                                        {/eq}
+                                >
+                                    <a  href="{:url('index/index/index',['cate_id'=>$vo.id])}">{$vo.name} <span class="sr-only">(current)</span></a>
+                                </li>
+
+
+                        {/volist}
+
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <form class="navbar-form navbar-left">
+                            <div class="form-group">
+                                <input type="text" name="keyword" value="{$Request.param.keyword}" class="form-control" placeholder="请输入文章标题关键字">
+                            </div>
+                            <button type="submit" id="btn" class="btn btn-default">搜索</button>
+                        </form>
+                        {if !empty($Think.session.user_id)}
+                        <li><a href="#">{$Think.session.user_name}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <!--<li><a href="#">Action</a></li>-->
+                                <li><a href="{:url('index/index/issue')}">发布文章</a></li>
+                                <li><a href="{:url('index/user/quit')}">退出登录</a></li>
+                                <!--<li role="separator" class="divider">发布问题</li>-->
+                                <!--<li><a href="#">退出登录</a></li>-->
+                            </ul>
+                        </li>
+                        {else/}
+                        <li><a href="{:url('index/user/register')}">注册</a></li>
+                        <li><a href="{:url('index/user/login')}">登录</a></li>
+                        <li class="dropdown">
+                            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录 <span class="caret"></span></a>-->
+                            <!--<ul class="dropdown-menu">-->
+                                <!--<li><a href="#">Action</a></li>-->
+                                <!--<li><a href="#">发布问题</a></li>-->
+                                <!--<li><a href="#">退出登录</a></li>-->
+                                <!--<li role="separator" class="divider">发布问题</li>-->
+                                <!--<li><a href="#">退出登录</a></li>-->
+                            <!--</ul>-->
+                        </li>
+                        {/if}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(function(){
+
+        $("#btn").click(function(){
+
+            var url = document.location.href;//获取url链接地址
+            window.location.href= url+ $("input[name=keyword]").val();
+
+        })
+
+    })
+    </script>

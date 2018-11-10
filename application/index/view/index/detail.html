@@ -1,0 +1,245 @@
+{extend name="public/base"/}
+{block name="body"}
+<div class="row">
+    <div class="col-md-8">
+        <div class="page-header">
+            <h2>全部问答</h2>
+        </div>
+
+
+        <div class="row" align="center">
+            <img src="__IMAGE__/{$mes.title_img}"   style="margin-top:5px;width:500px;height:500px; text-align: center;">
+
+        </div>
+
+        <span style="margin-left:10px;height:20px;float:left;" align="center">
+
+                        <!-- 获取当前文章的id -->
+                        <h4>标题:{$mes.title}</a></h4>
+                        <span>作者:{$mes.user_id|getUserName} ;发布时间：{$mes.create_time|date='Y-m-d H:i:s'}|阅读量:{$mes.pv}
+                        </span>
+            <span>详情:{$mes.content}</span>
+                    <p>
+                        <button type="button" id="can_id" user_id="{$mes.user_id}"  article_id="{$mes.id}" session_id="{$Request.session.user_id}" class="btn-primary">收藏</button>
+                        <button type="button" id="zang_id" user_id="{$mes.user_id}"  article_id="{$mes.id}"  session_id="{$Request.session.user_id}" value="{$mes.user_id}" class="btn-primary">点赞</button>
+
+                    </p>
+                        <hr/>
+
+
+
+            {if($Think.session.user_id != '')}
+
+
+                <table id="dis">
+
+                    <textarea class="form-control " id="content" name="content" style="width:500px;height:60px"  placeholder="请输入您宝贵的评论"></textarea>
+
+             <button type="button" id="comment"  user_id="{$Think.session.user_id}" art_id="{$mes.id}" class="btn-primary">提交</button>
+
+                          <p id="com"></p>
+
+
+                 </table>
+
+            {/if}
+;
+
+
+                    </span>
+
+
+
+    </div>
+
+
+
+
+    <div class="col-md-4">
+        <div class="page-header">
+            <h2>热门排行</h2>
+        </div>
+
+        <script>
+            $(function(){
+
+                $("#comment").on('click',function(){
+
+
+                    var tr = $("<p>内容:"+5555+"</p>");
+
+
+
+                    $("#dis").append(tr);
+
+
+
+
+
+                    $.ajax({
+                    url:"{:url('index/comment')}",
+                    data:{
+                        'user_id':$("#comment").attr('user_id'),
+                        'art_id':$("#comment").attr('art_id'),
+                        'content':$("#content").val()
+
+                    },
+                    type:'post',
+                    dataType:'json',
+
+                    success:function(msg){
+
+                        if(msg.status == 0){
+
+                            console.log(msg);
+
+                            $("#com").html(msg.message);
+
+
+
+
+                        } else {
+                            alert(msg.message);
+                        }
+
+                    } ,
+                    error:function(){
+
+                        alert('错误');
+                    }
+                })
+
+                });
+
+                //
+                // $("#comment").on('click',function(){
+                //
+                //     $.get("{:url('index/comment')}",{
+                //         'user_id':$("#comment").attr('user_id'),
+                //         'art_id':$("#comment").attr('art_id'),
+                //         'content':$("#content").val()
+                //
+                //     },function(msg){
+                //
+                //
+                //         if(msg.status == 0){
+                //
+                //            console.log(msg);
+                //
+                //             $("#com").html(msg.message);
+                //
+                //             $(p).append("<p>内容:"+msg.new_list+"</p>");
+                //
+                //
+                //
+                //         } else {
+                //             alert(msg.message);
+                //         }
+                //
+                //
+                //
+                //     },'json')
+                //
+                //
+                //
+                // });
+
+
+                $("#can_id").on('click',function(){
+
+
+
+                    if($(this).attr('session_id') == ""){
+                        alert('请先登录之后在操作');
+                        window.location.href="{:url('index/user/login')}";
+                    } else {
+                        var url = "{:url('index/index/fav')}";
+
+                        $.ajax({
+                            url:url,
+                            type:'post',
+                            data:{'user_id':$(this).attr('user_id'),'article_id':$(this).attr('article_id'),'name':$(this).text()},
+                            dataType:'json',
+                            success:function(msg){
+                                switch(msg.status){
+                                    case 1:
+                                        alert(msg.message);
+                                        $("#can_id").text('取消收藏');
+                                        break;
+                                    case 2:
+                                        alert(msg.message);
+                                        break;
+                                    case 3:
+                                        alert(msg.message);
+                                        $("#can_id").text('收藏');
+                                        break;
+                                    case 4:
+                                        alert(msg.message);
+                                        break
+
+                                }
+
+                            },
+                            error:function(){
+
+                                alert(66666);
+
+                            }
+                        })
+
+                    }
+
+
+                });
+
+
+
+                $("#zang_id").on('click',function(){
+                    var url = "{:url('index/index/like')}";
+
+                    $.ajax({
+                        url:url,
+                        type:'post',
+                        data:{'user_id':$(this).attr('user_id'),'article_id':$(this).attr('article_id')},
+                        dataType:'json',
+                        success:function(msg){
+                            switch(msg.status){
+                                case 1:
+                                    alert(msg.message);
+                                    $("#zang_id").text('点赞成功');
+                                    $("#zang_id").attr('disabled','disabled');
+                                    break;
+                                case 2:
+                                    alert(msg.message);
+                                    break;
+                                case 3:
+                                    $("#zang_id").text('点赞成功');
+                                    $("#zang_id").attr('disabled','disabled');
+                                    break;
+                                    // alert(msg.message);
+                            }
+
+                        },
+                        error:function(){
+
+                            alert(9999);
+
+                        }
+                    })
+                });
+
+
+
+
+
+
+            })
+
+
+
+
+
+
+
+        </script>
+        {/block}

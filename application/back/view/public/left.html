@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header h3">系统管理</li>
+            <li>
+                <a href="{:url('site/index')}"><span class="glyphicon glyphicon-cog"></span>&nbsp;网站管理</a>
+            </li>
+        </ul>
+
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header h3">用户管理</li>
+            <li><a href="{:url('user/index')}"><span class="glyphicon glyphicon-user"></span>&nbsp;用户列表</a></li>
+        </ul>
+
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header h3">文章管理</li>
+
+            {eq name="$Think.session.is_admin" value="2"}
+
+            <li><a href="{:url('cate/index')}"><span class="glyphicon glyphicon-lock"></span>&nbsp;分类管理</a></li>
+
+            {/eq}
+
+            <li><a href="{:url('article/index')}"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;文章管理</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-10">
+

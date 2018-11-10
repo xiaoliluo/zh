@@ -1,0 +1,91 @@
+{extend name="public/base"}
+{block name="body"}
+
+<h3 class="text-center text-danger">分类管理</h3>
+<div class="table-responsive">
+    <table class="table">
+
+        <tr class="success">
+            <td>ID</td>
+            <td>栏目名称</td>
+            <td>排序</td>
+            <td>状态</td>
+            <td>创建时间</td>
+            <td>操作</td>
+        </tr>
+
+    {volist name="data" id="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.name}</td>
+            <td>{$vo.sort}</td>
+            <td class="text-success">{$vo.status|status}</td>
+            <td >{$vo.create_time}</td>
+            <td>
+                <a href="{:url('cate/showlist',['id'=>$vo.id])}" >
+
+                    <button type="button" class="btn btn-success btn-sm" aria-label="Left Align">
+                            <span class="
+glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </button>
+
+
+                </a> &nbsp
+                <a href="" onclick="dele();return false;" id ="btn"  value="{$vo.id}">
+
+                    <button type="button" class="btn btn-success  btn-sm" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-remove-sign
+" aria-hidden="true"></span>
+                    </button>
+
+                </a>
+            </td>
+        </tr>
+        {/volist}
+
+
+    </table>
+
+    <button type="button" class="btn btn-primary" onclick="add();return false;">添加分类</button>
+
+   <div>
+       <ul class="pagination text-center">
+           {$data|raw}
+       </ul>
+   </div>
+
+
+</div>
+
+<script>
+    function dele(){
+
+        var mes = confirm('确认删除吗?');
+        if(mes == true){
+
+            $.post("{:url('cate/delete')}",{'id':$("#btn").attr('value')},function(msg){
+                switch (msg.status){
+                    case 0:
+                        alert(msg.message);
+                        window.location.href="{:url('cate/index')}";
+                        break;
+                    case 1:
+                        alert(msg.message);
+                }
+
+            },'json')
+
+        }
+
+    }
+
+
+    function add(){
+        window.location.href="{:url('cate/add')}";
+    }
+
+
+</script>
+
+
+{/block}

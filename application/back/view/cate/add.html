@@ -1,0 +1,88 @@
+{extend name="public/base"}
+{block name="body"}
+<h3 class="text-center text-danger">文章分类编辑</h3>>
+<form class="form-horizontal" role="form" id="form1">
+    <input type="hidden" name="id"  value="">
+
+    <div class="form-group">
+        <label for="firstname" class="col-sm-2 control-label">栏目名称</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="firstname"
+                   name="name"  placeholder="请输入栏目名称"  style="width:50%;" value="" >
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="lastname" class="col-sm-2 control-label">排序</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="lastname"
+                   name="sort"  placeholder="请输入排序号"  style="width:50%;" value="" >
+        </div>
+    </div>
+
+    <input type="hidden" name="user_id" value="{$Think.session.user_id}">
+    <!--<div class="form-group">-->
+        <!--<label for="lastname" class="col-sm-2 control-label">排序</label>-->
+        <!--<div class="col-sm-10">-->
+
+            <!--<input type="radio" name="status" id="inlineRadio1" value="1"  checked> 显示-->
+
+
+
+            <!--<input type="radio" name="status" id="inlineRadio4" value="0" > 隐藏-->
+
+
+        <!--</div>-->
+
+
+
+    <!--</div>-->
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button  type="button" class="btn btn-default" id="btn"  >保存</button>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $(function(){
+        $("#btn").click(function(){
+            $.ajax({
+                url:"{:url('cate/add')}",
+                data:$("#form1").serialize(),
+                type:'post',
+                'datatype':'json',
+                success:function(msg){
+
+                    switch(msg.status){
+                        case 0:
+                            alert(msg.message);
+                            window.location.href="{:url('cate/index')}";
+                            break;
+                        case 1:
+                            alert(msg.message);
+                            break;
+                    }
+
+                },
+
+                error:function(){
+                    alert('error');
+                }
+            })
+
+        })
+    })
+
+
+
+</script>
+
+
+
+
+
+{/block}
+

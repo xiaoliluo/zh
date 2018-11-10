@@ -1,0 +1,19 @@
+<div class="list-group">
+
+    {volist name="article" id="vo"}
+
+
+    <a href="#" class="list-group-item
+
+ {if $i ==1 }
+       active
+       {/if}
+">
+        {:mb_substr($vo.title,0,5)}<span class="badge">{$vo.pv}</span>
+
+
+
+    </a>
+    {/volist}
+
+</div>
